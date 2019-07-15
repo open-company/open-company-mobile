@@ -2,16 +2,18 @@
   "expo": {
     "name": "Carrot",
     "slug": "carrot-mobile",
+    "description": "Asynchronous communication for teams",
     "privacy": "public",
     "sdkVersion": "33.0.0",
+    "githubUrl": "https://github.com/open-company/open-company-mobile",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "primaryColor": "#FB5E48",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,8 +26,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "io.carrot.mobile",
+      "buildNumber": "1.0.0"
     },
-    "description": ""
+    "android": {
+      "package": "io.carrot.mobile",
+      "versionCode": 1
+    }
   }
 }
