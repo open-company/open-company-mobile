@@ -1,10 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, StatusBar, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+
+const Colors = {
+  background: '#FBFAF7'
+};
 
 export default function App() {
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={Colors.background} barStyle="dark-content" />
       <WebView
         source={{ uri: 'https://carrot.io/login/desktop' }}
         style={{ marginTop: 30 }}
@@ -16,6 +21,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FBFAF7',
+    backgroundColor: Colors.background,
   },
 });
