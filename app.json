@@ -32,7 +32,8 @@
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 1
+      "versionCode": 2,
+      "permissions": []
     }
   }
 }
