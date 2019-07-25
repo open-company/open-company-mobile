@@ -11,7 +11,7 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.background} barStyle="dark-content" />
       <WebView
-        source={{ uri: 'https://carrot.io/login/desktop' }}
+        source={{ uri: 'https://staging.carrot.io/login/desktop' }}
         style={{ marginTop: 30 }}
       />
     </View>
