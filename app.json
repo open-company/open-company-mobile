@@ -28,11 +28,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.3"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": []
     }
   }
