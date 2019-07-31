@@ -7,11 +7,29 @@ const Colors = {
 };
 
 export default function App() {
+  const initializeBridgeEventQueue = `
+    oc.web.expo.setup_bridge();
+    true;
+  `;
+
+  const enqueueEvent = `
+    document.getElementById('app').dispatchEvent(
+      new CustomEvent('expoEvent', {detail: {someValue: 'hello'}})
+    );
+    true;
+  `;
+
+  setTimeout(() => {
+    this.webref.injectJavaScript(enqueueEvent);
+  }, 10000);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={Colors.background} barStyle="dark-content" />
       <WebView
-        source={{ uri: 'https://staging.carrot.io/login/desktop' }}
+        ref={r => (this.webref = r)}
+        injectedJavaScript={initializeBridgeEventQueue}
+        source={{ uri: 'http://192.168.0.5:3559/login/desktop' }}
         style={{ marginTop: 30 }}
       />
     </View>
