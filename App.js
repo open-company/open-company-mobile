@@ -7,10 +7,28 @@ const Colors = {
 };
 
 export default function App() {
+  // Setup native -> mobile side of the bridge (see oc.web.expo ns in open-company-web)
   const initializeBridgeEventQueue = `
-    oc.web.expo.setup_bridge();
+    try {
+      if (window.oc) {
+        oc.web.expo.setup_bridge();
+      }
+    } catch (error) { alert(error); }
     true;
   `;
+
+  // Handles the web -> native side of the bridge (see oc.web.expo ns in open-company-web)
+  const handleWebMessage = (event) => {
+    const { op, data } = JSON.parse(event.nativeEvent.data);
+    switch (op) {
+      case 'log':
+        console.log(data);
+        break;
+      case 'web-ready':
+        console.log('Carrot web is ready to receive native events');
+        break;
+    }
+  };
 
   const enqueueEvent = `
     document.getElementById('app').dispatchEvent(
@@ -28,9 +46,10 @@ export default function App() {
       <StatusBar backgroundColor={Colors.background} barStyle="dark-content" />
       <WebView
         ref={r => (this.webref = r)}
-        injectedJavaScript={initializeBridgeEventQueue}
         source={{ uri: 'http://192.168.0.5:3559/login/desktop' }}
         style={{ marginTop: 30 }}
+        injectedJavaScript={initializeBridgeEventQueue}
+        onMessage={handleWebMessage}
       />
     </View>
   );
