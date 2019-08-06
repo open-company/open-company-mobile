@@ -1,13 +1,14 @@
 import React from 'react';
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { handleWebMessage } from './src/nativeWebBridge';
+import { handleWebMessage, usePushNotificationHandler } from './src/nativeWebBridge';
 
 const Colors = {
   background: '#FBFAF7'
 };
 
 export default function App() {
+  usePushNotificationHandler(this);
 
   return (
     <View style={styles.container}>
