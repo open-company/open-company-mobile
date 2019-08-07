@@ -2,23 +2,6 @@ import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
 /*
-Returns null if the user has not granted the push notification permission, or returns
-the push token that uniquely identifies this device if the permission has been previously
-granted. To request notification permission (on iOS only), use the requestPushNotificationPermission()
-function.
-*/
-export async function getPushNotificationToken() {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-
-    if (existingStatus !== 'granted') {
-        return null;
-    }
-
-    // Get the token that uniquely identifies this device
-    return Notifications.getExpoPushTokenAsync();
-}
-
-/*
 Displays the push notification permission dialog to the user, and returns the push token
 that uniquely identifies this device if the user grants permission, or null if permission is
 denied. Note that this function is truly only relevant on iOS devices. On Android, permissions

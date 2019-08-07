@@ -1,4 +1,4 @@
-import { getPushNotificationToken, requestPushNotificationPermission } from './pushNotifications';
+import { requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
 import { Notifications } from 'expo';
 
@@ -16,28 +16,13 @@ export const handleWebMessage = (webref, event) => {
     switch (op) {
         case 'log':
             console.log(data);
-            break;
-        case 'get-push-notification-token':
-            bridgeGetPushNotificationToken(webref);
+            break;PushNotificationToken(webref);
             break;
         case 'request-push-notification-permission':
             bridgeRequestPushNotificationPermission(webref);
             break;
     }
 };
-
-const bridgeGetPushNotificationToken = async (webref) => {
-    console.log('bridgeGetPushNotificationToken called by web');
-    const token = await getPushNotificationToken();
-    let cmd = '';
-    if (token) {
-        cmd = `oc.web.expo.on_push_notification_token('${stringifyBridgeData(token)}'); true;`;   
-    } else {
-        cmd = `oc.web.expo.on_push_notification_token(null); true;`;
-    }
-    console.log(cmd);
-    webref.injectJavaScript(cmd);
-}
 
 const bridgeRequestPushNotificationPermission = async (webref) => {
     console.log('bridgeRequestPushNotificationToken called by web');
