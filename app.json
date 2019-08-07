@@ -10,7 +10,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "primaryColor": "#FB5E48",
@@ -28,11 +28,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "1.1.0"
+      "buildNumber": "5"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 4,
+      "versionCode": 5,
       "permissions": []
     },
     "notification": {
