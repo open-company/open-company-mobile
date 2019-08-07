@@ -15,7 +15,7 @@ export default function App() {
       <StatusBar backgroundColor={Colors.background} barStyle="dark-content" />
       <WebView
         ref={r => (this.webref = r)}
-        source={{ uri: 'http://192.168.0.5:3559/login/desktop' }}
+        source={{ uri: 'http://staging.carrot.io/login/desktop' }}
         style={{ marginTop: 30 }}
         onMessage={(event) => handleWebMessage(this.webref, event)}
       />
