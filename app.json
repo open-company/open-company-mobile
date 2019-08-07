@@ -34,6 +34,9 @@
       "package": "io.carrot.mobile",
       "versionCode": 3,
       "permissions": []
+    },
+    "notification": {
+      "iosDisplayInForeground": true
     }
   }
 }
