@@ -16,7 +16,6 @@ export const handleWebMessage = (webref, event) => {
     switch (op) {
         case 'log':
             console.log(data);
-            break;PushNotificationToken(webref);
             break;
         case 'request-push-notification-permission':
             bridgeRequestPushNotificationPermission(webref);
