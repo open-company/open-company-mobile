@@ -1,4 +1,4 @@
-import { requestOrGetPushNotificationToken } from './pushNotifications';
+import { getPushNotificationToken, requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
 import { Notifications } from 'expo';
 
@@ -18,19 +18,38 @@ export const handleWebMessage = (webref, event) => {
             console.log(data);
             break;
         case 'get-push-notification-token':
-            getPushNotificationToken(webref);
+            bridgeGetPushNotificationToken(webref);
+            break;
+        case 'request-push-notification-permission':
+            bridgeRequestPushNotificationPermission(webref);
             break;
     }
 };
 
-const getPushNotificationToken = async (webref) => {
-    console.log('Carrot web requesting push notification token');
-    const token = await requestOrGetPushNotificationToken();
+const bridgeGetPushNotificationToken = async (webref) => {
+    console.log('bridgeGetPushNotificationToken called by web');
+    const token = await getPushNotificationToken();
+    let cmd = '';
     if (token) {
-        const cmd = `oc.web.expo.on_push_notification_token('${stringifyBridgeData(token)}'); true;`;
-        console.log(cmd);
-        webref.injectJavaScript(cmd);
+        cmd = `oc.web.expo.on_push_notification_token('${stringifyBridgeData(token)}'); true;`;   
+    } else {
+        cmd = `oc.web.expo.on_push_notification_token(null); true;`;
     }
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
+}
+
+const bridgeRequestPushNotificationPermission = async (webref) => {
+    console.log('bridgeRequestPushNotificationToken called by web');
+    const token = await requestPushNotificationPermission();
+    let cmd = '';
+    if (token) {
+        cmd = `oc.web.expo.on_push_notification_permission('${stringifyBridgeData(token)}'); true;`;   
+    } else {
+        cmd = `oc.web.expo.on_push_notification_permission(null); true;`;
+    }
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
 }
 
 
