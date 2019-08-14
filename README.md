@@ -28,7 +28,7 @@ the QR code on that page with your mobile device to open the app within the Expo
 
 ```
 # Run this while `expo start` is running
-expo publish
+expo publish --release-channel staging
 
 # ...
 # Uploading JavaScript bundles
