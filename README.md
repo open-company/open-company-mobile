@@ -24,23 +24,30 @@ the QR code on that page with your mobile device to open the app within the Expo
 
 ## Deploying
 
-### Staging (Expo)
+### OTA Release (JS-only)
+
+Changes to the `.js` code can be pushed to users over-the-air (OTA), and does not require
+another release through the respective app store channels.
 
 ```
 # Run this while `expo start` is running
-expo publish --release-channel staging
+
+expo publish --release-channel [staging | prod]
 
 # ...
 # Uploading JavaScript bundles
 # Published
 # Your URL is
 
-# https://exp.host/@your-expo-username/carrot-mobile?release-channel=staging
+# https://exp.host/@your-expo-username/carrot-mobile?release-channel=STAGE
 ```
 
-Now you can share this link with testers.
+Users with the app installed will autmoatically receive the update OTA.
 
-### Staging (TestFlight / Android Internal Testing)
+### Native App Release
+
+Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release
+through the respective app store channels for review.
 
 ```
 # iOS
@@ -51,21 +58,5 @@ expo build:android --release-channel staging
 ```
 
 These commands will run the build on the Expo build service. After a short while, a link will
-be provided with the resuling .ipa/.apk artifact. These can then be uploaded to their respective
+be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
 test services (TestFlight / Android Internal Testing) as usual.
-
-### Prod
-
-```
-# iOS
-expo build:ios --release-channel prod
-
-# Android
-expo build:android --release-channel prod
-```
-
-These commands will run the build on the Expo build service. After a short while, a link will
-be provided with the resuling .ipa/.apk artifact. These can then be uploaded to their respective
-app stores as usual.
-
-You can find more information in the [Expo docs](https://docs.expo.io/versions/latest/distribution/app-stores/).
