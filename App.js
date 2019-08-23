@@ -7,7 +7,7 @@ import getEnvVars from './environment';
 const { webViewUrl, whitelistedOrigins } = getEnvVars();
 
 const Colors = {
-  background: '#FBFAF7'
+  background: '#FFFFFF'
 };
 
 export default function App() {
