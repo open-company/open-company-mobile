@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { handleWebMessage, usePushNotificationHandler } from './src/nativeWebBridge';
 import getEnvVars from './environment';
 
-const { webViewUrl } = getEnvVars();
+const { webViewUrl, whitelistedOrigins } = getEnvVars();
 
 const Colors = {
   background: '#FBFAF7'
@@ -19,8 +19,11 @@ export default function App() {
       <WebView
         ref={r => (this.webref = r)}
         source={{ uri: webViewUrl }}
+        originWhitelist={whitelistedOrigins}
         style={{ marginTop: 30 }}
         onMessage={(event) => handleWebMessage(this.webref, event)}
+        decelerationRate="normal"
+        allowsBackForwardNavigationGestures="true"
       />
     </View>
   );
