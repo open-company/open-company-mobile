@@ -18,6 +18,8 @@ const whitelistedOrigins = [
     "https://*.youtube.com",
     "https://*.loom.com",
     "https://*.useloom.com",
+    "https://*.appcues.com",
+    "https://*.doubleclick.net",
 ];
 
 const devWhitelistedOrigins = [
