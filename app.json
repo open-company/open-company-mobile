@@ -12,7 +12,6 @@
     ],
     "version": "1.1.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "primaryColor": "#FB5E48",
     "splash": {
       "image": "./assets/splash.png",
@@ -28,12 +27,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "8"
+      "buildNumber": "9",
+      "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 8,
-      "permissions": []
+      "versionCode": 9,
+      "permissions": [],
+      "icon": "./assets/android-icon.png"
     }
   }
 }
