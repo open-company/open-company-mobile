@@ -23,7 +23,7 @@ export default function App() {
         style={{ marginTop: 30 }}
         onMessage={(event) => handleWebMessage(this.webref, event)}
         decelerationRate="normal"
-        allowsBackForwardNavigationGestures="true"
+        // allowsBackForwardNavigationGestures="true"
       />
     </View>
   );
