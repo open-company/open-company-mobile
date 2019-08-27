@@ -28,7 +28,7 @@ const bridgeRequestPushNotificationPermission = async (webref) => {
     const token = await requestPushNotificationPermission();
     let cmd = '';
     if (token) {
-        cmd = `oc.web.expo.on_push_notification_permission('${stringifyBridgeData(token)}'); true;`;   
+        cmd = `oc.web.expo.on_push_notification_permission('${stringifyBridgeData(token)}'); true;`;
     } else {
         cmd = `oc.web.expo.on_push_notification_permission(null); true;`;
     }
@@ -40,10 +40,15 @@ const bridgeRequestPushNotificationPermission = async (webref) => {
 export function usePushNotificationHandler(component) {
     useEffect(() => {
         function handleNotification(notification) {
-            console.log("Notification tapped!", notification.data);
-            const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}'); true;`;
-            console.log(cmd);
-            this.webref.injectJavaScript(cmd);
+            // Expo sets origin='received' when a push notification is received while app is foregrounded,
+            // and triggers this event immediately. In this case, our web app is already equipped to
+            // display an in-app notification, and so there's nothing to be done on this side of the bridge.
+            if (notification.origin !== 'received') {
+                console.log("Notification tapped!", notification.data);
+                const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}'); true;`;
+                console.log(cmd);
+                this.webref.injectJavaScript(cmd);
+            }
         }
         Notifications.addListener(handleNotification.bind(component));
     });
