@@ -24,6 +24,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "notification": {
+      "icon": "./assets/android-notification-icon.png"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
@@ -32,7 +35,7 @@
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 11,
+      "versionCode": 12,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }
