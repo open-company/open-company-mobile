@@ -25,7 +25,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
       "buildNumber": "10",
       "icon": "./assets/ios-icon.png"
