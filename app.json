@@ -27,12 +27,12 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 10,
+      "versionCode": 11,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }
