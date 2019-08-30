@@ -2,6 +2,7 @@
   "expo": {
     "name": "Carrot",
     "slug": "carrot-mobile",
+    "scheme": "carrot",
     "description": "Asynchronous communication for teams",
     "privacy": "public",
     "sdkVersion": "33.0.0",

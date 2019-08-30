@@ -1,6 +1,7 @@
 import { requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
-import { Notifications } from 'expo';
+import { Notifications, Linking } from 'expo';
+import url from 'url';
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -20,6 +21,9 @@ export const handleWebMessage = (webref, event) => {
         case 'request-push-notification-permission':
             bridgeRequestPushNotificationPermission(webref);
             break;
+        case 'get-deep-link-origin':
+            bridgeGetDeepLinkOrigin(webref);
+            break;
     }
 };
 
@@ -32,6 +36,14 @@ const bridgeRequestPushNotificationPermission = async (webref) => {
     } else {
         cmd = `oc.web.expo.on_push_notification_permission(null); true;`;
     }
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
+}
+
+const bridgeGetDeepLinkOrigin = async (webref) => {
+    console.log('bridgeGetDeepLinkOrigin called by web');
+    const deepUrl = Linking.makeUrl('/');
+    let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
     console.log(cmd);
     webref.injectJavaScript(cmd);
 }
@@ -51,5 +63,23 @@ export function usePushNotificationHandler(component) {
             }
         }
         Notifications.addListener(handleNotification.bind(component));
+    });
+}
+
+export function useDeepLinkHandler(component, webViewUrl) {
+    useEffect(() => {
+        function handleDeepLink(deepLink) {
+            // console.log("Handling deep link:", url);
+            let { path, queryParams } = Linking.parse(deepLink.url);
+            const resolved = url.resolve(webViewUrl, path);
+            const parsed = url.parse(resolved);
+            parsed.query = queryParams;
+            const formatted = url.format(parsed);
+            console.log(`Navigating webview to: ${formatted}`);
+            const cmd = `window.location = '${formatted}'; true;`;
+            console.log(cmd);
+            this.webref.injectJavaScript(cmd);
+        }
+        Linking.addEventListener('url', handleDeepLink.bind(component));
     });
 }

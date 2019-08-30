@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, StatusBar, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { handleWebMessage, usePushNotificationHandler } from './src/nativeWebBridge';
+import { handleWebMessage, usePushNotificationHandler, useDeepLinkHandler } from './src/nativeWebBridge';
 import getEnvVars from './environment';
 
 const { webViewUrl, whitelistedOrigins } = getEnvVars();
@@ -12,6 +12,7 @@ const Colors = {
 
 export default function App() {
   usePushNotificationHandler(this);
+  useDeepLinkHandler(this, webViewUrl);
 
   return (
     <View style={styles.container}>

@@ -9,7 +9,6 @@ const whitelistedOrigins = [
     "https://*.carrot.io",
     "https://slack.com",
     "https://*.slack.com",
-    "https://accounts.google.com",
     "https://www.filestackapi.com",
     "https://static.filestackapi.com",
     "https://www.dropbox.com",
