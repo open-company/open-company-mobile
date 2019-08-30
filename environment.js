@@ -31,7 +31,8 @@ const devWhitelistedOrigins = [
 const ENV = {
     dev: {
         // Change this to your local development tunnel
-        webViewUrl: 'http://192.168.0.5:3559/login/desktop',
+        // webViewUrl: 'http://192.168.0.5:3559/login/desktop',
+        webViewUrl: 'https://staging.carrot.io/login/desktop',
         whitelistedOrigins: devWhitelistedOrigins,
     },
     staging: {

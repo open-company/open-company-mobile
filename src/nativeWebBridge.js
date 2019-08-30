@@ -70,12 +70,13 @@ export function useDeepLinkHandler(component, webViewUrl) {
     useEffect(() => {
         function handleDeepLink(deepLink) {
             // console.log("Handling deep link:", url);
-            let { path, queryParams } = Linking.parse(deepLink.url);
-            const resolved = url.resolve(webViewUrl, path);
+            const { path, queryParams } = Linking.parse(deepLink.url);
+            const updatedPath = path.startsWith('/') ? path : '/' + path;
+            const resolved = url.resolve(webViewUrl, updatedPath);
+            console.log(`Resolved deep link to: ${resolved}`);
             const parsed = url.parse(resolved);
             parsed.query = queryParams;
             const formatted = url.format(parsed);
-            console.log(`Navigating webview to: ${formatted}`);
             const cmd = `window.location = '${formatted}'; true;`;
             console.log(cmd);
             this.webref.injectJavaScript(cmd);
