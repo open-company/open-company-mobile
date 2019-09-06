@@ -2,6 +2,7 @@
   "expo": {
     "name": "Carrot",
     "slug": "carrot-mobile",
+    "scheme": "carrot",
     "description": "Asynchronous communication for teams",
     "privacy": "public",
     "sdkVersion": "33.0.0",
@@ -10,7 +11,7 @@
       "ios",
       "android"
     ],
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "primaryColor": "#FB5E48",
     "splash": {
@@ -30,12 +31,12 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "11",
+      "buildNumber": "13",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 12,
+      "versionCode": 13,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }

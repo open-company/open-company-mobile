@@ -9,7 +9,6 @@ const whitelistedOrigins = [
     "https://*.carrot.io",
     "https://slack.com",
     "https://*.slack.com",
-    "https://accounts.google.com",
     "https://www.filestackapi.com",
     "https://static.filestackapi.com",
     "https://www.dropbox.com",
@@ -20,6 +19,7 @@ const whitelistedOrigins = [
     "https://*.useloom.com",
     "https://*.appcues.com",
     "https://*.doubleclick.net",
+    "https://adservice.google.com",
     "https://*.vimeo.com",
 ];
 
@@ -32,7 +32,8 @@ const devWhitelistedOrigins = [
 const ENV = {
     dev: {
         // Change this to your local development tunnel
-        webViewUrl: 'http://192.168.0.5:3559/login/desktop',
+        // webViewUrl: 'http://192.168.0.5:3559/login/desktop',
+        webViewUrl: 'https://staging.carrot.io/login/desktop',
         whitelistedOrigins: devWhitelistedOrigins,
     },
     staging: {
