@@ -15,7 +15,8 @@
     "react-dom": "^16.8.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-web": "^0.11.4",
-    "react-native-webview": "^5.12.1"
+    "react-native-webview": "^5.12.1",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.1.1"
