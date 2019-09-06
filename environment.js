@@ -19,6 +19,7 @@ const whitelistedOrigins = [
     "https://*.useloom.com",
     "https://*.appcues.com",
     "https://*.doubleclick.net",
+    "https://adservice.google.com",
     "https://*.vimeo.com",
 ];
 
