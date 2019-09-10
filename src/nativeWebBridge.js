@@ -65,7 +65,8 @@ export function usePushNotificationHandler(component) {
                     if (window.oc) {
                         oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
                     } else {
-                        window.OCCarrotMobile.pendingNotificationTap = '${stringifyBridgeData(notification.data)}';
+                        var OCCarrotMobile = {};
+                        OCCarrotMobile.pendingNotificationTap = '${stringifyBridgeData(notification.data)}';
                     }
                     true;
                 `;
