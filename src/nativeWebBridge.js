@@ -57,7 +57,18 @@ export function usePushNotificationHandler(component) {
             // display an in-app notification, and so there's nothing to be done on this side of the bridge.
             if (notification.origin !== 'received') {
                 console.log("Notification tapped!", notification.data);
-                const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}'); true;`;
+                // The command that we inject is conditional upon whether the embedded web application is
+                // actually loaded or not. If it is, we can run the tap handler immediately. Otherwise,
+                // we need to buffer the event somewhere so the web application can poll for it once loaded.
+                // Without this, notifcation taps on a cold start of the app would be completely dropped.
+                const cmd = `
+                    if (window.oc) {
+                        oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
+                    } else {
+                        window.OCCarrotMobile.pendingNotificationTap = '${stringifyBridgeData(notification.data)}';
+                    }
+                    true;
+                `;
                 console.log(cmd);
                 this.webref.injectJavaScript(cmd);
             }
