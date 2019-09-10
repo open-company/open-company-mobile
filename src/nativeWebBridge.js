@@ -24,6 +24,9 @@ export const handleWebMessage = (webref, event) => {
         case 'get-deep-link-origin':
             bridgeGetDeepLinkOrigin(webref);
             break;
+        case 'ready':
+            bridgeReady(webref);
+            break;
     }
 };
 
@@ -48,6 +51,16 @@ const bridgeGetDeepLinkOrigin = async (webref) => {
     webref.injectJavaScript(cmd);
 }
 
+const bridgeReady = async (webref) => {
+    console.log('bridgeReady called by web');
+    const notifData = webref.carrot && webref.carrot.pendingNotificationTap;
+    if (notifData) {
+        const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notifData)}'); true;`;
+        console.log(cmd);
+        webref.injectJavaScript(cmd);
+        delete webref.carrot.pendingNotificationTap;
+    }
+}
 
 export function usePushNotificationHandler(component) {
     useEffect(() => {
@@ -61,12 +74,13 @@ export function usePushNotificationHandler(component) {
                 // actually loaded or not. If it is, we can run the tap handler immediately. Otherwise,
                 // we need to buffer the event somewhere so the web application can poll for it once loaded.
                 // Without this, notifcation taps on a cold start of the app would be completely dropped.
+                // This buffer can then be injected in the `bridgeReady` event.
+                this.webref.carrot = {
+                    pendingNotificationTap: notification.data
+                };
                 const cmd = `
                     if (window.oc) {
                         oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
-                    } else {
-                        var OCCarrotMobile = {};
-                        OCCarrotMobile.pendingNotificationTap = '${stringifyBridgeData(notification.data)}';
                     }
                     true;
                 `;
