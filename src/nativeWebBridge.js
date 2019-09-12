@@ -30,9 +30,6 @@ export const handleWebMessage = (webref, event) => {
         case 'pend-push-notification':
             bridgePendPushNotification(webref, data);
             break;
-        case 'get-deep-link-origin':
-            bridgeGetDeepLinkOrigin(webref);
-            break;
     }
 };
 
@@ -42,6 +39,12 @@ const bridgeInit = async (webref) => {
     if (!bridgeInitialized) {
         console.log('bridgeInit called by web');
         bridgeInitialized = true;
+
+        // Send the app's deep link to web
+        const deepUrl = Linking.makeUrl('/');
+        let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
+        console.log(cmd);
+        webref.injectJavaScript(cmd);
     }
 }
 
@@ -82,14 +85,6 @@ const bridgePendPushNotification = async (webref, notif) => {
     webref.carrot = {
         pendingNotificationTap: notif
     };
-}
-
-const bridgeGetDeepLinkOrigin = async (webref) => {
-    console.log('bridgeGetDeepLinkOrigin called by web');
-    const deepUrl = Linking.makeUrl('/');
-    let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
-    console.log(cmd);
-    webref.injectJavaScript(cmd);
 }
 
 export function usePushNotificationHandler(component) {
