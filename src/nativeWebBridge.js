@@ -36,9 +36,13 @@ export const handleWebMessage = (webref, event) => {
     }
 };
 
+var bridgeInitialized = false;
 const bridgeInit = async (webref) => {
-    // TODO: ensure this code only runs once. Web will call this many times.
-    console.log('bridgeInit called by web');
+    // It's possible for web to call this many times. Ensure it only runs once.
+    if (!bridgeInitialized) {
+        console.log('bridgeInit called by web');
+        bridgeInitialized = true;
+    }
 }
 
 const bridgeOrgLoaded = async (webref, data) => {
@@ -73,7 +77,7 @@ const bridgePendPushNotification = async (webref, notif) => {
     // When this circumstance is detected by the web app, it will signal the bridge to
     // pend that push notification until it is ready to handle it.
     // Readiness is signaled in the "org-loaded" bridge op.
-    
+
     // Buffer the pending notification on the webref object for ease of access later.
     webref.carrot = {
         pendingNotificationTap: notif
