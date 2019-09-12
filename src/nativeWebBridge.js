@@ -91,7 +91,14 @@ export function usePushNotificationHandler(component) {
             if (notification.origin !== 'received') {
                 console.log("Notification tapped!", notification.data);
                 const cmd = `
-                    oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
+                    try {
+                        oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
+                    } catch {
+                        ReactNativeWebView.postMessage({
+                            op: 'pend-push-notification',
+                            data: '${stringifyBridgeData(notification.data)}'
+                        });
+                    }
                     true;
                 `;
                 console.log(cmd);
