@@ -27,6 +27,9 @@ export const handleWebMessage = (webref, event) => {
         case 'request-push-notification-permission':
             bridgeRequestPushNotificationPermission(webref);
             break;
+        case 'pend-push-notification':
+            bridgePendPushNotification(webref, data);
+            break;
         case 'get-deep-link-origin':
             bridgeGetDeepLinkOrigin(webref);
             break;
@@ -34,18 +37,21 @@ export const handleWebMessage = (webref, event) => {
 };
 
 const bridgeInit = async (webref) => {
+    // TODO: ensure this code only runs once. Web will call this many times.
     console.log('bridgeInit called by web');
-    // const notifData = webref.carrot && webref.carrot.pendingNotificationTap;
-    // if (notifData) {
-    //     const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notifData)}'); true;`;
-    //     console.log(cmd);
-    //     webref.injectJavaScript(cmd);
-    //     delete webref.carrot.pendingNotificationTap;
-    // }
 }
 
 const bridgeOrgLoaded = async (webref, data) => {
     console.log(`bridgeOrgLoaded called by web: ${data}`);
+
+    // Fire off any pending push notifications. See bridgePendPushNotification.
+    const notifData = webref.carrot && webref.carrot.pendingNotificationTap;
+    if (notifData) {
+        const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notifData)}'); true;`;
+        console.log(cmd);
+        webref.injectJavaScript(cmd);
+        delete webref.carrot.pendingNotificationTap;
+    }
 }
 
 const bridgeRequestPushNotificationPermission = async (webref) => {
@@ -59,6 +65,19 @@ const bridgeRequestPushNotificationPermission = async (webref) => {
     }
     console.log(cmd);
     webref.injectJavaScript(cmd);
+}
+
+const bridgePendPushNotification = async (webref, notif) => {
+    // It is possible for the web application to not be loaded yet when a push notification
+    // is tapped by the user. This is the case when the app is backgrounded, for example.
+    // When this circumstance is detected by the web app, it will signal the bridge to
+    // pend that push notification until it is ready to handle it.
+    // Readiness is signaled in the "org-loaded" bridge op.
+    
+    // Buffer the pending notification on the webref object for ease of access later.
+    webref.carrot = {
+        pendingNotificationTap: notif
+    };
 }
 
 const bridgeGetDeepLinkOrigin = async (webref) => {
@@ -77,18 +96,8 @@ export function usePushNotificationHandler(component) {
             // display an in-app notification, and so there's nothing to be done on this side of the bridge.
             if (notification.origin !== 'received') {
                 console.log("Notification tapped!", notification.data);
-                // The command that we inject is conditional upon whether the embedded web application is
-                // actually loaded or not. If it is, we can run the tap handler immediately. Otherwise,
-                // we need to buffer the event somewhere so the web application can poll for it once loaded.
-                // Without this, notifcation taps on a cold start of the app would be completely dropped.
-                // This buffer can then be injected in the `bridgeInit` event.
-                this.webref.carrot = {
-                    pendingNotificationTap: notification.data
-                };
                 const cmd = `
-                    if (window.oc) {
-                        oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
-                    }
+                    oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}');
                     true;
                 `;
                 console.log(cmd);
