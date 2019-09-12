@@ -33,19 +33,14 @@ export const handleWebMessage = (webref, event) => {
     }
 };
 
-var bridgeInitialized = false;
 const bridgeInit = async (webref) => {
-    // It's possible for web to call this many times. Ensure it only runs once.
-    if (!bridgeInitialized) {
-        console.log('bridgeInit called by web');
-        bridgeInitialized = true;
+    console.log('bridgeInit called by web');
 
-        // Send the app's deep link to web
-        const deepUrl = Linking.makeUrl('/');
-        let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
-        console.log(cmd);
-        webref.injectJavaScript(cmd);
-    }
+    // Send the app's deep link to web
+    const deepUrl = Linking.makeUrl('/');
+    let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
 }
 
 const bridgeOrgLoaded = async (webref, data) => {
