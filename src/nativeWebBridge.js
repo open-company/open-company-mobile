@@ -18,17 +18,35 @@ export const handleWebMessage = (webref, event) => {
         case 'log':
             console.log(data);
             break;
+        case 'init':
+            bridgeInit(webref);
+            break;
+        case 'org-loaded':
+            bridgeOrgLoaded(webref, data);
+            break;
         case 'request-push-notification-permission':
             bridgeRequestPushNotificationPermission(webref);
             break;
         case 'get-deep-link-origin':
             bridgeGetDeepLinkOrigin(webref);
             break;
-        case 'ready':
-            bridgeReady(webref);
-            break;
     }
 };
+
+const bridgeInit = async (webref) => {
+    console.log('bridgeInit called by web');
+    // const notifData = webref.carrot && webref.carrot.pendingNotificationTap;
+    // if (notifData) {
+    //     const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notifData)}'); true;`;
+    //     console.log(cmd);
+    //     webref.injectJavaScript(cmd);
+    //     delete webref.carrot.pendingNotificationTap;
+    // }
+}
+
+const bridgeOrgLoaded = async (webref, data) => {
+    console.log(`bridgeOrgLoaded called by web: ${data}`);
+}
 
 const bridgeRequestPushNotificationPermission = async (webref) => {
     console.log('bridgeRequestPushNotificationToken called by web');
@@ -51,17 +69,6 @@ const bridgeGetDeepLinkOrigin = async (webref) => {
     webref.injectJavaScript(cmd);
 }
 
-const bridgeReady = async (webref) => {
-    console.log('bridgeReady called by web');
-    const notifData = webref.carrot && webref.carrot.pendingNotificationTap;
-    if (notifData) {
-        const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notifData)}'); true;`;
-        console.log(cmd);
-        webref.injectJavaScript(cmd);
-        delete webref.carrot.pendingNotificationTap;
-    }
-}
-
 export function usePushNotificationHandler(component) {
     useEffect(() => {
         function handleNotification(notification) {
@@ -74,7 +81,7 @@ export function usePushNotificationHandler(component) {
                 // actually loaded or not. If it is, we can run the tap handler immediately. Otherwise,
                 // we need to buffer the event somewhere so the web application can poll for it once loaded.
                 // Without this, notifcation taps on a cold start of the app would be completely dropped.
-                // This buffer can then be injected in the `bridgeReady` event.
+                // This buffer can then be injected in the `bridgeInit` event.
                 this.webref.carrot = {
                     pendingNotificationTap: notification.data
                 };
