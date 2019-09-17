@@ -70,7 +70,7 @@ export function usePushNotificationHandler(component, webViewUrl) {
                 console.log("Notification tapped!", notification.data);
                 const notificationPath = notification.data['url-path'];
                 if (notificationPath) {
-                    const resolved = url.resolve(webViewUrl, notification.data['url-path']);
+                    const resolved = url.resolve(webViewUrl, notificationPath);
                     const cmd = `window.location = '${resolved}'; true;`;
                     console.log(cmd);
                     this.webref.injectJavaScript(cmd);
