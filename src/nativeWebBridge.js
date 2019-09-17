@@ -2,6 +2,7 @@ import { requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
 import { Notifications, Linking } from 'expo';
 import url from 'url';
+import Constants from 'expo-constants'
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -23,6 +24,9 @@ export const handleWebMessage = (webref, event) => {
             break;
         case 'get-deep-link-origin':
             bridgeGetDeepLinkOrigin(webref);
+            break;
+        case 'get-app-version':
+            bridgeGetAppVersion(webref);
             break;
     }
 };
@@ -48,6 +52,13 @@ const bridgeGetDeepLinkOrigin = async (webref) => {
     webref.injectJavaScript(cmd);
 }
 
+const bridgeGetAppVersion = async (webref) => {
+    console.log('bridgeGetAppVersion called by web');
+    let versionString = `${Constants.manifest.version} (${Constants.nativeBuildVersion})`;
+    let cmd = `oc.web.expo.on_app_version('${versionString}'); true;`;
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
+}
 
 export function usePushNotificationHandler(component, webViewUrl) {
     useEffect(() => {
