@@ -11,7 +11,7 @@ const Colors = {
 };
 
 export default function App() {
-  usePushNotificationHandler(this);
+  usePushNotificationHandler(this, webViewUrl);
   useDeepLinkHandler(this, webViewUrl);
 
   return (

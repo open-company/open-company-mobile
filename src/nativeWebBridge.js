@@ -60,7 +60,7 @@ const bridgeGetAppVersion = async (webref) => {
     webref.injectJavaScript(cmd);
 }
 
-export function usePushNotificationHandler(component) {
+export function usePushNotificationHandler(component, webViewUrl) {
     useEffect(() => {
         function handleNotification(notification) {
             // Expo sets origin='received' when a push notification is received while app is foregrounded,
@@ -68,9 +68,13 @@ export function usePushNotificationHandler(component) {
             // display an in-app notification, and so there's nothing to be done on this side of the bridge.
             if (notification.origin !== 'received') {
                 console.log("Notification tapped!", notification.data);
-                const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}'); true;`;
-                console.log(cmd);
-                this.webref.injectJavaScript(cmd);
+                const notificationPath = notification.data['url-path'];
+                if (notificationPath) {
+                    const resolved = url.resolve(webViewUrl, notificationPath);
+                    const cmd = `window.location = '${resolved}'; true;`;
+                    console.log(cmd);
+                    this.webref.injectJavaScript(cmd);
+                }
             }
         }
         Notifications.addListener(handleNotification.bind(component));
