@@ -2,6 +2,7 @@ import { requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
 import { Notifications, Linking } from 'expo';
 import url from 'url';
+import Constants from 'expo-constants'
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -23,6 +24,9 @@ export const handleWebMessage = (webref, event) => {
             break;
         case 'get-deep-link-origin':
             bridgeGetDeepLinkOrigin(webref);
+            break;
+        case 'get-app-version':
+            bridgeGetAppVersion(webref);
             break;
     }
 };
@@ -48,8 +52,15 @@ const bridgeGetDeepLinkOrigin = async (webref) => {
     webref.injectJavaScript(cmd);
 }
 
+const bridgeGetAppVersion = async (webref) => {
+    console.log('bridgeGetAppVersion called by web');
+    let versionString = `${Constants.manifest.version} (${Constants.nativeBuildVersion})`;
+    let cmd = `oc.web.expo.on_app_version('${versionString}'); true;`;
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
+}
 
-export function usePushNotificationHandler(component) {
+export function usePushNotificationHandler(component, webViewUrl) {
     useEffect(() => {
         function handleNotification(notification) {
             // Expo sets origin='received' when a push notification is received while app is foregrounded,
@@ -57,9 +68,13 @@ export function usePushNotificationHandler(component) {
             // display an in-app notification, and so there's nothing to be done on this side of the bridge.
             if (notification.origin !== 'received') {
                 console.log("Notification tapped!", notification.data);
-                const cmd = `oc.web.expo.on_push_notification_tapped('${stringifyBridgeData(notification.data)}'); true;`;
-                console.log(cmd);
-                this.webref.injectJavaScript(cmd);
+                const notificationPath = notification.data['url-path'];
+                if (notificationPath) {
+                    const resolved = url.resolve(webViewUrl, notificationPath);
+                    const cmd = `window.location = '${resolved}'; true;`;
+                    console.log(cmd);
+                    this.webref.injectJavaScript(cmd);
+                }
             }
         }
         Notifications.addListener(handleNotification.bind(component));
