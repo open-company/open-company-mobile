@@ -7,8 +7,6 @@ import Constants from 'expo-constants'
 const whitelistedOrigins = [
     "https://carrot.io",
     "https://*.carrot.io",
-    "https://slack.com",
-    "https://*.slack.com",
     "https://www.filestackapi.com",
     "https://static.filestackapi.com",
     "https://www.dropbox.com",
@@ -18,8 +16,6 @@ const whitelistedOrigins = [
     "https://*.loom.com",
     "https://*.useloom.com",
     "https://*.appcues.com",
-    "https://*.doubleclick.net",
-    "https://adservice.google.com",
     "https://*.vimeo.com",
 ];
 
