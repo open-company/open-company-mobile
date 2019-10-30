@@ -17,6 +17,7 @@ const whitelistedOrigins = [
     "https://*.useloom.com",
     "https://*.appcues.com",
     "https://*.vimeo.com",
+    "https://js.stripe.com",
 ];
 
 const devWhitelistedOrigins = [
