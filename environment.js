@@ -18,6 +18,7 @@ const whitelistedOrigins = [
     "https://*.appcues.com",
     "https://*.vimeo.com",
     "https://js.stripe.com",
+    "https://m.stripe.network",
 ];
 
 const devWhitelistedOrigins = [
