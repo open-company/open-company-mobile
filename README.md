@@ -60,3 +60,22 @@ expo build:android --release-channel staging
 These commands will run the build on the Expo build service. After a short while, a link will
 be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
 test services (TestFlight / Android Internal Testing) as usual.
+
+### Push notifications certificates renewal
+
+When push tickets return error link `InvalidCertificates` we need to renew the certificates for the push.
+
+To do so you need first to log in on the Apple Developer portal https://developer.apple.com/, then go to the "Certificates, Identifiers & Profiles" section.
+Click on Profiles on the left menu and remove the Distribution provisioning profile for iOS, now go to Certificates and remove a iOS Distribution certificates (we can have only three and they are not app specific, can be reused for multiple apps), finally go to the Keys section and remove the older key you can see.
+
+Now you just need to run the expo's re-new certificates command:
+
+```
+# iOS
+expo build:ios -c
+
+# Android
+expo build:android -c
+```
+
+And let Expo handle all the things.
