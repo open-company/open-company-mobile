@@ -63,14 +63,17 @@ test services (TestFlight / Android Internal Testing) as usual.
 
 ### Push notifications certificates renewal
 
-When push tickets return error link `InvalidCertificates` we need to renew the certificates for the push.
+When Expo push attempts return an `InvalidCertificates` error we need to renew the push certificates.
 
-To do so you need first to log in on the Apple Developer portal https://developer.apple.com/, then go to the "Certificates, Identifiers & Profiles" section.
-Click on Profiles on the left menu and remove the Distribution provisioning profile for iOS, now go to Certificates and remove a iOS Distribution certificates (we can have only three and they are not app specific, can be reused for multiple apps), finally go to the Keys section and remove the older key you can see.
+- Log in on the [Apple Developer portal](https://developer.apple.com/)
+- Go to the "Certificates, Identifiers & Profiles" section
+- Click on Profiles on the left menu and remove the Distribution provisioning profile for iOS
+- Go to Certificates and remove a iOS Distribution certificates (we can have only three and they are not app specific, can be reused for multiple apps)
+- Go to the Keys section and remove the older key you can see
 
-Now you just need to run the expo's re-new certificates command:
+Finally, you just need to run Expo's re-new certificates command:
 
-```
+```console
 # iOS
 expo build:ios -c
 
@@ -78,4 +81,4 @@ expo build:ios -c
 expo build:android -c
 ```
 
-And let Expo handle all the things.
+And let Expo handle all the things!
