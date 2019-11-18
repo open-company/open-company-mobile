@@ -31,11 +31,15 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
+      // Use even buildNumber for production releases
+      // and odd buildNumber for staging releases
       "buildNumber": "18",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
+      // Use even versionCode for production releases
+      // and odd versionCode for staging releases
       "versionCode": 18,
       "permissions": [],
       "icon": "./assets/android-icon.png"

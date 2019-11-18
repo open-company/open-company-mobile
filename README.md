@@ -61,6 +61,31 @@ These commands will run the build on the Expo build service. After a short while
 be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
 test services (TestFlight / Android Internal Testing) as usual.
 
+### AppStore and Google play release
+
+To release to the store you need to bump `version` in the app.js file and also (required by Google Play)
+bump the `versionCode` and `buildNumber`. For the latter we use even numbers for production releases and
+odd numbers for staging releases.
+Once all versions has been bumped you can run
+
+```
+# iOS
+expo build:ios --release-channel prod
+
+# Android
+expo build:android --release-channel prod
+```
+
+Now download the IPA and APK files from the links you get from the command above and upload the files.
+
+For iOS you need to log in to https://developer.apple.com and go the your apps and create a new app version.
+Then you need Xcode version 10.3 or older since it includes the Application Loader utility app that you can use to upload the
+IPA file. Open Application Loader, log in with your credential and drop in the IPA file and :tada:.
+
+For Android you need to go to the Google Play console and go to the release section. Create a new release and drag&drop the APK
+file in the dedicated section and :tada:.
+
+
 ### Push notifications certificates renewal
 
 When Expo push attempts return an `InvalidCertificates` error we need to renew the push certificates.
