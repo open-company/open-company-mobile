@@ -78,12 +78,12 @@ expo build:android --release-channel prod
 
 Now download the IPA and APK files from the links you get from the command above and upload the files.
 
-For iOS you need to log in to https://developer.apple.com and go the your apps and create a new app version.
-Then you need Xcode version 10.3 or older since it includes the Application Loader utility app that you can use to upload the
-IPA file. Open Application Loader, log in with your credential and drop in the IPA file and :tada:.
+For iOS you need to log in to https://developer.apple.com and go the your apps and create a new app version, set the release date to a future date (1 year from now) so the app won't be released automatically when it gets approved but it will wait for our click.
+Then you need Xcode version 10.3 or older since it includes the Application Loader utility app that you can use to upload the IPA file. Open Application Loader, log in with your credential and drop in the IPA file.
+Then go to AppStore Connect again, select the build you just upload and submit it for review. Reply NO to the encryption question and follow [this](https://docs.expo.io/versions/latest/distribution/app-stores/#ios-specific-guidelines) and [this](https://segment.com/docs/sources/mobile/ios/quickstart/#step-5-submitting-to-the-app-store) for the IFDA question.
+:tada: you are done!
 
-For Android you need to go to the Google Play console and go to the release section. Create a new release and drag&drop the APK
-file in the dedicated section and :tada:.
+For Android you need to go to the Google Play console and go to the release section. Create a new release and upload the APK file in the dedicated section and :tada:.
 
 
 ### Push notifications certificates renewal
