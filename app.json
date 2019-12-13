@@ -11,7 +11,7 @@
       "ios",
       "android"
     ],
-    "version": "1.1.4",
+    "version": "1.1.5",
     "orientation": "portrait",
     "primaryColor": "#FB5E48",
     "splash": {
@@ -33,14 +33,14 @@
       "bundleIdentifier": "io.carrot.mobile",
       // Use even buildNumber for production releases
       // and odd buildNumber for staging releases
-      "buildNumber": "18",
+      "buildNumber": "19",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
       // Use even versionCode for production releases
       // and odd versionCode for staging releases
-      "versionCode": 18,
+      "versionCode": 19,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }
