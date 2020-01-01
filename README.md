@@ -1,6 +1,26 @@
-# open-company-mobile
+# [OpenCompany](https://github.com/open-company) Mobile
 
-Thin Expo wrapper around the [open-company-web](https://github.com/open-company/open-company-web) project.
+[![AGPL License](http://img.shields.io/badge/license-AGPL-blue.svg?style=flat)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+
+## Background
+
+> You have to be transparent so you no longer cast a shadow but instead let the light pass through you.
+
+> -- Kamand Kojouri
+
+Teams struggle to keep everyone on the same page. People are hyper-connected in the moment with chat and email, but it gets noisy as teams grow, and people miss key information. Everyone needs clear and consistent leadership, and the solution is surprisingly simple and effective - **great leadership updates that build transparency and alignment**.
+
+With that in mind we designed [Carrot](https://carrot.io/), a software-as-a-service application powered by the open source [OpenCompany platform](https://github.com/open-company) and a source-available [web UI](https://github.com/open-company/open-company-web).
+
+With Carrot, important company updates, announcements, stories, and strategic plans create focused conversations that keep everyone aligned without interruptions. When information is shared transparently, it inspires trust, new ideas and new levels of stakeholder engagement. Carrot makes it easy for leaders to engage with employees, investors, and customers, creating alignment for everyone.
+
+Transparency expectations are changing. Organizations need to change as well if they are going to attract and retain savvy teams, investors and customers. Just as open source changed the way we build software, transparency changes how we build successful companies with information that is open, interactive, and always accessible. Carrot turns transparency into a competitive advantage.
+
+To get started, head to: [Carrot](https://carrot.io/)
+
+## Overview
+
+This is a thin [Expo](https://expo.io/) wrapper around the [OpenCompany Web](https://github.com/open-company/open-company-web) project.
 
 ## Developing
 
@@ -11,25 +31,23 @@ You'll need a couple dependencies installed locally:
 - [Yarn](https://yarnpkg.com)
 - [Expo app](https://expo.io/tools) installed on your mobile device
 
-Start your [local Carrot services](https://github.com/open-company) as usual, then:
+Start your [local OpenCompany services](https://github.com/open-company) as usual, then:
 
-```
+```console
 yarn install # you only need to run this once
 
 expo start
 ```
 
-This will start an Expo development tunnel, and open a build status page in your browser. Scan
-the QR code on that page with your mobile device to open the app within the Expo client.
+This will start an Expo development tunnel, and open a build status page in your browser. Scan the QR code on that page with your mobile device to open the app within the Expo client.
 
 ## Deploying
 
 ### OTA Release (JS-only)
 
-Changes to the `.js` code can be pushed to users over-the-air (OTA), and does not require
-another release through the respective app store channels.
+Changes to the `.js` code can be pushed to users over-the-air (OTA), and does not require another release through the respective app store channels.
 
-```
+```console
 # Run this while `expo start` is running
 
 expo publish --release-channel [staging | prod]
@@ -46,10 +64,9 @@ Users with the app installed will autmoatically receive the update OTA.
 
 ### Native App Release
 
-Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release
-through the respective app store channels for review.
+Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release through the respective app store channels for review.
 
-```
+```console
 # iOS
 expo build:ios --release-channel staging
 
@@ -57,18 +74,15 @@ expo build:ios --release-channel staging
 expo build:android --release-channel staging
 ```
 
-These commands will run the build on the Expo build service. After a short while, a link will
-be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
-test services (TestFlight / Android Internal Testing) as usual.
+These commands will run the build on the Expo build service. After a short while, a link will be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective test services (TestFlight / Android Internal Testing) as usual.
 
 ### AppStore and Google play release
 
-To release to the store you need to bump `version` in the app.js file and also (required by Google Play)
-bump the `versionCode` and `buildNumber`. For the latter we use even numbers for production releases and
-odd numbers for staging releases.
-Once all versions has been bumped you can run
+To release to the store you need to bump `version` in the app.js file and also (required by Google Play) bump the `versionCode` and `buildNumber`. For the latter we use even numbers for production releases and odd numbers for staging releases.
 
-```
+Once all versions has been bumped you can run:
+
+```console
 # iOS
 expo build:ios --release-channel prod
 
@@ -84,7 +98,6 @@ Then go to AppStore Connect again, select the build you just upload and submit i
 :tada: you are done!
 
 For Android you need to go to the Google Play console and go to the release section. Create a new release and upload the APK file in the dedicated section and :tada:.
-
 
 ### Push notifications certificates renewal
 
@@ -107,3 +120,19 @@ expo build:android -c
 ```
 
 And let Expo handle all the things!
+
+
+## Participation
+
+Please note that this project is released with a [Contributor Code of Conduct](https://github.com/open-company/open-company-mobile/blob/mainline/CODE-OF-CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+
+## License
+
+Distributed under the [GNU Affero General Public License Version 3](https://www.gnu.org/licenses/agpl-3.0.en.html).
+
+Copyright © 2020 OpenCompany, LLC.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.en.html) for more details.
