@@ -1,8 +1,9 @@
 import { requestPushNotificationPermission } from './pushNotifications';
 import { useEffect } from 'react';
-import { Notifications, Linking } from 'expo';
+import * as Linking from 'expo-linking';
+import * as Notifications from 'expo-notifications';
 import url from 'url';
-import Constants from 'expo-constants'
+import {default as Constants} from 'expo-constants';
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -77,7 +78,8 @@ export function usePushNotificationHandler(component, webViewUrl) {
                 }
             }
         }
-        Notifications.addListener(handleNotification.bind(component));
+        const subscription = Notifications.addPushTokenListener(handleNotification.bind(component));
+        return () => subscription.remove();
     });
 }
 

@@ -2,7 +2,7 @@
 TODO: potentially add this to .gitignore if it ever contains sensitive values
 ******************************/
 
-import Constants from 'expo-constants'
+import {default as Constants} from 'expo-constants'
 
 const whitelistedOrigins = [
     "https://carrot.io",
@@ -25,15 +25,15 @@ const devWhitelistedOrigins = [
     ...whitelistedOrigins,
     "http://localhost",
     "http://192.168.0.5",
-    "http://192.168.1.97",
+    "http://192.168.1.48",
 ];
 
 const ENV = {
     dev: {
         // Change this to your local development tunnel
         // webViewUrl: 'http://192.168.0.5:3559/login/desktop',
-        // webViewUrl: 'http://192.168.1.97:3559/login/desktop',
-        webViewUrl: 'https://staging.carrot.io/login/desktop',
+        webViewUrl: 'http://192.168.1.48:3559/login/desktop',
+        // webViewUrl: 'https://staging.carrot.io/login/desktop',
         whitelistedOrigins: devWhitelistedOrigins,
     },
     staging: {
