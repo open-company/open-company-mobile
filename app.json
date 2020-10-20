@@ -28,15 +28,16 @@
     "notification": {
       "icon": "./assets/android-notification-icon.png"
     },
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "20",
+      "buildNumber": "1",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 20,
+      "versionCode": 1,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }
