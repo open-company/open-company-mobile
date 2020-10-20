@@ -4,6 +4,7 @@ import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import url from 'url';
 import {default as Constants} from 'expo-constants';
+import {Appearance, useColorScheme} from 'react-native-appearance';
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -29,6 +30,8 @@ export const handleWebMessage = (webref, event) => {
         case 'get-app-version':
             bridgeGetAppVersion(webref);
             break;
+        case 'get-color-scheme':
+            bridgeGetColorScheme(webref);
     }
 };
 
@@ -57,6 +60,14 @@ const bridgeGetAppVersion = async (webref) => {
     console.log('bridgeGetAppVersion called by web');
     let versionString = `${Constants.manifest.version} (${Constants.nativeBuildVersion})`;
     let cmd = `oc.web.expo.on_app_version('${versionString}'); true;`;
+    console.log(cmd);
+    webref.injectJavaScript(cmd);
+}
+
+const bridgeGetColorScheme = async (webref) => {
+    console.log('bridgeGetColorScheme called by web');
+    const colorScheme = useColorScheme();
+    let cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
     console.log(cmd);
     webref.injectJavaScript(cmd);
 }
@@ -98,6 +109,23 @@ export function useDeepLinkHandler(component, webViewUrl) {
             console.log(cmd);
             this.webref.injectJavaScript(cmd);
         }
-        Linking.addEventListener('url', handleDeepLink.bind(component));
+        const subscription = Linking.addEventListener('url', handleDeepLink.bind(component));
+        return () => subscription.remove();
+    });
+}
+
+
+export function useColorSchemeHandler(component, webViewUrl) {
+    useEffect(() => {
+        function handleColoSchemeChange({colorScheme}) {
+            // do something with color scheme
+            console.log(`App colorScheme changed, new scheme: ${colorScheme}`);
+            var cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}')`;
+            console.log(cmd);
+            this.webref.injectJavaScript(cmd);
+            
+        }
+        const subscription = Appearance.addChangeListener(handleColoSchemeChange.bind(component));
+        return () => subscription.remove();
     });
 }
