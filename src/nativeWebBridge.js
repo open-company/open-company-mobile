@@ -1,10 +1,10 @@
 import { requestPushNotificationPermission } from './pushNotifications';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
-import url from 'url';
 import {default as Constants} from 'expo-constants';
-import {Appearance, useColorScheme} from 'react-native-appearance';
+import {Appearance} from 'react-native-appearance';
+import * as URL from 'url';
 
 const stringifyBridgeData = (data) => {
     return JSON.stringify(data).replace(/\\"/g, "\\'");
@@ -15,27 +15,28 @@ const parseBridgeData = (str) => {
 }
 
 // Handles the web -> native side of the bridge (see oc.web.expo ns in open-company-web)
-export const handleWebMessage = (webref, event) => {
+export const handleWebMessage = (webViewRef, event) => {
     const { op, data } = parseBridgeData(event.nativeEvent.data);
+    console.log(`handleWebMessage`)
     switch (op) {
         case 'log':
             console.log(data);
             break;
         case 'request-push-notification-permission':
-            bridgeRequestPushNotificationPermission(webref);
+            bridgeRequestPushNotificationPermission(webViewRef);
             break;
         case 'get-deep-link-origin':
-            bridgeGetDeepLinkOrigin(webref);
+            bridgeGetDeepLinkOrigin(webViewRef);
             break;
         case 'get-app-version':
-            bridgeGetAppVersion(webref);
+            bridgeGetAppVersion(webViewRef);
             break;
         case 'get-color-scheme':
-            bridgeGetColorScheme(webref);
+            bridgeGetColorScheme(webViewRef);
     }
 };
 
-const bridgeRequestPushNotificationPermission = async (webref) => {
+const bridgeRequestPushNotificationPermission = async (webViewRef) => {
     console.log('bridgeRequestPushNotificationToken called by web');
     const token = await requestPushNotificationPermission();
     let cmd = '';
@@ -45,87 +46,94 @@ const bridgeRequestPushNotificationPermission = async (webref) => {
         cmd = `oc.web.expo.on_push_notification_permission(null); true;`;
     }
     console.log(cmd);
-    webref.injectJavaScript(cmd);
+    webViewRef.current.injectJavaScript(cmd);
 }
 
-const bridgeGetDeepLinkOrigin = async (webref) => {
+const bridgeGetDeepLinkOrigin = async (webViewRef) => {
     console.log('bridgeGetDeepLinkOrigin called by web');
     const deepUrl = Linking.makeUrl('/');
-    let cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
+    const cmd = `oc.web.expo.on_deep_link_origin('${stringifyBridgeData(deepUrl)}'); true;`;
     console.log(cmd);
-    webref.injectJavaScript(cmd);
+    webViewRef.current.injectJavaScript(cmd);
 }
 
-const bridgeGetAppVersion = async (webref) => {
+const bridgeGetAppVersion = async (webViewRef) => {
     console.log('bridgeGetAppVersion called by web');
-    let versionString = `${Constants.manifest.version} (${Constants.nativeBuildVersion})`;
-    let cmd = `oc.web.expo.on_app_version('${versionString}'); true;`;
+    const versionString = `${Constants.manifest.version} (${Constants.nativeBuildVersion})`;
+    const cmd = `oc.web.expo.on_app_version('${versionString}'); true;`;
     console.log(cmd);
-    webref.injectJavaScript(cmd);
+    webViewRef.current.injectJavaScript(cmd);
 }
 
-const bridgeGetColorScheme = async (webref) => {
+const bridgeGetColorScheme = async (webViewRef) => {
     console.log('bridgeGetColorScheme called by web');
-    const colorScheme = useColorScheme();
-    let cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
+    const colorScheme = Appearance.getColorScheme();
+    const cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
     console.log(cmd);
-    webref.injectJavaScript(cmd);
+    webViewRef.current.injectJavaScript(cmd);
 }
 
-export function usePushNotificationHandler(component, webViewUrl) {
-    useEffect(() => {
-        function handleNotification(notification) {
-            // Expo sets origin='received' when a push notification is received while app is foregrounded,
-            // and triggers this event immediately. In this case, our web app is already equipped to
-            // display an in-app notification, and so there's nothing to be done on this side of the bridge.
-            if (notification.origin !== 'received') {
-                console.log("Notification tapped!", notification.data);
-                const notificationPath = notification.data['url-path'];
-                if (notificationPath) {
-                    const resolved = url.resolve(webViewUrl, notificationPath);
-                    const cmd = `window.location = '${resolved}'; true;`;
-                    console.log(cmd);
-                    this.webref.injectJavaScript(cmd);
-                }
+export function usePushNotificationHandler(webViewRef, webViewUrl) {
+    const handleNotification = useCallback((notification) => {
+        // Expo sets origin='received' when a push notification is received while app is foregrounded,
+        // and triggers this event immediately. In this case, our web app is already equipped to
+        // display an in-app notification, and so there's nothing to be done on this side of the bridge.
+        if (notification.origin !== 'received') {
+            console.log("Notification tapped!", notification.data);
+            const notificationPath = notification.data['url-path'];
+            if (notificationPath) {
+                const resolved = URL.resolve(webViewUrl, notificationPath);
+                const cmd = `window.location = '${resolved}'; true;`;
+                console.log(cmd);
+                webViewRef.current.injectJavaScript(cmd);
             }
         }
-        const subscription = Notifications.addPushTokenListener(handleNotification.bind(component));
-        return () => subscription.remove();
     });
+
+    useEffect(() => {
+        const subscription = Notifications.addPushTokenListener(handleNotification);
+        if (subscription)
+            return () => subscription.remove();
+    }, [handleNotification]);
 }
 
-export function useDeepLinkHandler(component, webViewUrl) {
-    useEffect(() => {
-        function handleDeepLink(deepLink) {
-            // console.log("Handling deep link:", url);
-            const { path, queryParams } = Linking.parse(deepLink.url);
-            const updatedPath = path.startsWith('/') ? path : '/' + path;
-            const resolved = url.resolve(webViewUrl, updatedPath);
-            console.log(`Resolved deep link to: ${resolved}`);
-            const parsed = url.parse(resolved);
-            parsed.query = queryParams;
-            const formatted = url.format(parsed);
+export function useDeepLinkHandler(webViewRef, webViewUrl) {
+    const handleDeepLink = useCallback((deepLink) => {
+        console.log(`Handling deep link: ${deepLink}`);
+        const parsedUrl = Linking.parse(deepLink.url);
+        // Used only in dev to avoid 404 redirects
+        if ( parsedUrl.scheme !== 'exp' ) {
+            const updatedPath = parsedUrl.path && parsedUrl.path.startsWith('/') ? parsedUrl.path : '/' + parsedUrl.path;
+            const resolved = URL.resolve(webViewUrl, updatedPath);
+            const parsed = URL.parse(resolved);
+            parsed.query = parsedUrl.queryParams;
+            const formatted = URL.format(parsed);
             const cmd = `window.location = '${formatted}'; true;`;
             console.log(cmd);
-            this.webref.injectJavaScript(cmd);
+            webViewRef.current.injectJavaScript(cmd);
         }
-        const subscription = Linking.addEventListener('url', handleDeepLink.bind(component));
-        return () => subscription.remove();
     });
+
+    useEffect(() => {
+        const subscription = Linking.addEventListener('url', handleDeepLink);
+        if (subscription)
+            return () => subscription.remove();
+    }, [handleDeepLink]);
 }
 
 
-export function useColorSchemeHandler(component, webViewUrl) {
-    useEffect(() => {
-        function handleColoSchemeChange({colorScheme}) {
-            // do something with color scheme
-            console.log(`App colorScheme changed, new scheme: ${colorScheme}`);
-            var cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}')`;
-            console.log(cmd);
-            this.webref.injectJavaScript(cmd);
-            
-        }
-        const subscription = Appearance.addChangeListener(handleColoSchemeChange.bind(component));
-        return () => subscription.remove();
+export function useColorSchemeHandler(webViewRef) {
+    const handleColorSchemeChange = useCallback(() => {
+        console.log(`Handling color scheme change`);
+        // do something with color scheme
+        const cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
+        console.log(cmd);
+        webViewRef.current.injectJavaScript(cmd);
     });
+
+    useEffect(() => {
+        const subscription = Appearance.addChangeListener(handleColorSchemeChange);
+        if (subscription)
+            return () => subscription.remove();
+    }, [handleColorSchemeChange]);
 }

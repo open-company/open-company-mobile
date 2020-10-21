@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, StatusBar, View } from 'react-native';
+import { StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { handleWebMessage, usePushNotificationHandler, useDeepLinkHandler, useColorSchemeHandler } from './src/nativeWebBridge';
 import getEnvVars from './environment';
-import { useColorScheme } from 'react-native-appearance';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
 const { webViewUrl, whitelistedOrigins } = getEnvVars();
 
@@ -12,25 +12,28 @@ const Colors = {
 };
 
 export default function App() {
-  const colorScheme = useColorScheme();
-  const themeStatusBarStyle = colorScheme === 'light' ? 'light-content' : 'dark-content';
+  const colorScheme = useColorScheme(),
+        webViewRef = React.useRef(null),
+        themeStatusBarStyle = colorScheme === 'light' ? 'light-content' : 'dark-content';
 
-  usePushNotificationHandler(this, webViewUrl);
-  useDeepLinkHandler(this, webViewUrl);
-  useColorSchemeHandler(this, webViewUrl);
+  usePushNotificationHandler(webViewRef, webViewUrl);
+  useDeepLinkHandler(webViewRef, webViewUrl);
+  useColorSchemeHandler(webViewRef);
 
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={Colors.background} barStyle={themeStatusBarStyle} />
-      <WebView
-        ref={r => (this.webref = r)}
-        source={{ uri: webViewUrl }}
-        originWhitelist={whitelistedOrigins}
-        onMessage={(event) => handleWebMessage(this.webref, event)}
-        decelerationRate="normal"
-        // allowsBackForwardNavigationGestures="true"
-      />
-    </View>
+    <AppearanceProvider>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={Colors.background} barStyle={themeStatusBarStyle} />
+        <WebView
+          ref={webViewRef}
+          source={{ uri: webViewUrl }}
+          originWhitelist={whitelistedOrigins}
+          onMessage={(event) => handleWebMessage(webViewRef, event)}
+          decelerationRate="normal"
+          // allowsBackForwardNavigationGestures="true"
+        />
+      </SafeAreaView>
+    </AppearanceProvider>
   );
 }
 

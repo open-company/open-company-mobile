@@ -28,7 +28,7 @@
     "notification": {
       "icon": "./assets/android-notification-icon.png"
     },
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
