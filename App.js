@@ -8,38 +8,61 @@ import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 const { webViewUrl, whitelistedOrigins } = getEnvVars();
 
 const Colors = {
-  background: '#FFFFFF'
+  lightBackgroundColor: '#FBFAF9',
+  darkBackgroundColor: '#1B202A'
 };
 
-export default function App() {
-  const colorScheme = useColorScheme(),
+const styles = {
+  light: {
+    bgColor: Colors.lightBackgroundColor,
+    statusBarStyle: 'dark-content',
+    style: StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: Colors.lightBackgroundColor,
+      }
+    })
+  },
+  dark: {
+    bgColor: Colors.darkBackgroundColor,
+    statusBarStyle: 'light-content',
+    style: StyleSheet.create({
+      container: {
+        flex: 1,
+        backgroundColor: Colors.darkBackgroundColor,
+      }
+    })
+  }
+};
+
+function Carrot() {
+  const colorScheme = useColorScheme() || 'light',
         webViewRef = React.useRef(null),
-        themeStatusBarStyle = colorScheme === 'light' ? 'light-content' : 'dark-content';
+        themedStyle = styles[colorScheme];;
 
   usePushNotificationHandler(webViewRef, webViewUrl);
   useDeepLinkHandler(webViewRef, webViewUrl);
   useColorSchemeHandler(webViewRef);
 
   return (
-    <AppearanceProvider>
-      <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor={Colors.background} barStyle={themeStatusBarStyle} />
-        <WebView
-          ref={webViewRef}
-          source={{ uri: webViewUrl }}
-          originWhitelist={whitelistedOrigins}
-          onMessage={(event) => handleWebMessage(webViewRef, event)}
-          decelerationRate="normal"
-          // allowsBackForwardNavigationGestures="true"
-        />
-      </SafeAreaView>
-    </AppearanceProvider>
+    <SafeAreaView style={themedStyle.style.container}>
+      <StatusBar backgroundColor={themedStyle.bgColor} barStyle={themedStyle.statusBarStyle} />
+      <WebView
+        ref={webViewRef}
+        source={{ uri: webViewUrl }}
+        originWhitelist={whitelistedOrigins}
+        onMessage={(event) => handleWebMessage(webViewRef, event)}
+        decelerationRate="normal"
+        // allowsBackForwardNavigationGestures="true"
+      />
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-});
+export default function App() {
+  return (
+    <AppearanceProvider>
+      <Carrot/>
+    </AppearanceProvider>
+  );
+}
