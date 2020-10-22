@@ -48,7 +48,7 @@ Bring the [debuger ui page](http://localhost:19001/debugger-ui) in foreground an
 NB: on the client site there is a script injection that needs to be added before ReactDOM is required. The script is injected only if you have this environment variable set:
 
 ```console
-export EXPO_DEVTOOLS_URL="http://localhost:8097"
+export REACT_NATIVE_DEVTOOLS_URL="http://localhost:8097"
 ```
 
 More info on debugging Expo applications can be found [here](https://docs.expo.io/workflow/debugging/#debugging-with-react-devtools)
