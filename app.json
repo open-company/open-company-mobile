@@ -32,7 +32,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
