@@ -1,11 +1,21 @@
+import * as Sentry from 'sentry-expo';
 import React from 'react';
 import { StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { handleWebMessage, usePushNotificationHandler, useDeepLinkHandler, useColorSchemeHandler } from './src/nativeWebBridge';
-import getEnvVars from './environment';
+import { default as getEnvVars } from './environment';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 
-const { webViewUrl, whitelistedOrigins } = getEnvVars();
+console.log("DBG getEnvVars", getEnvVars());
+
+const { webViewUrl, whitelistedOrigins, sentryDSN, sentryEnvironment, debug } = getEnvVars();
+
+Sentry.init({
+  dsn: sentryDSN,
+  enableInExpoDevelopment: true,
+  environment: sentryEnvironment,
+  debug: debug, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+});
 
 const Colors = {
   lightBackgroundColor: '#FBFAF9',

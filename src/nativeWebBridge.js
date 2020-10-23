@@ -102,16 +102,14 @@ export function useDeepLinkHandler(webViewRef, webViewUrl) {
         console.log(`Handling deep link: ${deepLink}`);
         const parsedUrl = Linking.parse(deepLink.url);
         // Used only in dev to avoid 404 redirects
-        if ( parsedUrl.scheme !== 'exp' ) {
-            const updatedPath = parsedUrl.path && parsedUrl.path.startsWith('/') ? parsedUrl.path : '/' + parsedUrl.path;
-            const resolved = URL.resolve(webViewUrl, updatedPath);
-            const parsed = URL.parse(resolved);
-            parsed.query = parsedUrl.queryParams;
-            const formatted = URL.format(parsed);
-            const cmd = `window.location = '${formatted}'; true;`;
-            console.log(cmd);
-            webViewRef.current.injectJavaScript(cmd);
-        }
+        const updatedPath = parsedUrl.path && parsedUrl.path.startsWith('/') ? parsedUrl.path : '/' + parsedUrl.path;
+        const resolved = URL.resolve(webViewUrl, updatedPath);
+        const parsed = URL.parse(resolved);
+        parsed.query = parsedUrl.queryParams;
+        const formatted = URL.format(parsed);
+        const cmd = `window.location = '${formatted}'; true;`;
+        console.log(cmd);
+        webViewRef.current.injectJavaScript(cmd);
     });
 
     useEffect(() => {

@@ -32,14 +32,26 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
-      "buildNumber": "2",
+      "buildNumber": "4",
       "icon": "./assets/ios-icon.png"
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 1,
+      "versionCode": 21,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     }
+  },
+  "hooks": {
+    "postPublish": [
+      {
+        "file": "sentry-expo/upload-sourcemaps",
+        "config": {
+          "organization": "open-company",
+          "project": "open-company-mobile",
+          "authToken": ""
+        }
+      }
+    ]
   }
 }

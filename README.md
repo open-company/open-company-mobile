@@ -77,8 +77,9 @@ Users with the app installed will autmoatically receive the update OTA.
 
 ### Native App Release
 
-Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release
-through the respective app store channels for review.
+Insert your Sentry auth token in app.json before releasing staging/production apps, it's needed to upload source maps.
+
+Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release through the respective app store channels for review.
 
 ```
 # iOS
@@ -88,9 +89,7 @@ expo build:ios --release-channel staging
 expo build:android --release-channel staging
 ```
 
-These commands will run the build on the Expo build service. After a short while, a link will
-be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
-test services (TestFlight / Android Internal Testing) as usual.
+These commands will run the build on the Expo build service. After a short while, a link will be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective test services (TestFlight / Android Internal Testing) as usual.
 
 ### AppStore and Google play release
 
