@@ -45,11 +45,14 @@ const styles = {
   }
 };
 
+function fixedColorScheme(cs) {
+  return cs === 'dark'? 'dark' : 'light';
+}
+
 function Carrot() {
-  const colorScheme = useColorScheme() || 'light',
+  const colorScheme = fixedColorScheme(useColorScheme()),
         webViewRef = React.useRef(null),
         themedStyle = styles[colorScheme];
-  console.log(`DBG Carrot render colorScheme: ${colorScheme} themeStyle: ${JSON.stringify(themedStyle)}`);
 
   usePushNotificationHandler(webViewRef, webViewUrl);
   useDeepLinkHandler(webViewRef, webViewUrl);
