@@ -37,7 +37,7 @@
     },
     "android": {
       "package": "io.carrot.mobile",
-      "versionCode": 21,
+      "versionCode": 22,
       "permissions": [],
       "icon": "./assets/android-icon.png"
     },
@@ -46,7 +46,7 @@
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "open-company",
+            "organization": "opencompany",
             "project": "open-company-mobile",
             "authToken": ""
           }
