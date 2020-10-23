@@ -40,18 +40,18 @@
       "versionCode": 21,
       "permissions": [],
       "icon": "./assets/android-icon.png"
-    }
-  },
-  "hooks": {
-    "postPublish": [
-      {
-        "file": "sentry-expo/upload-sourcemaps",
-        "config": {
-          "organization": "open-company",
-          "project": "open-company-mobile",
-          "authToken": ""
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "open-company",
+            "project": "open-company-mobile",
+            "authToken": ""
+          }
         }
-      }
-    ]
+      ]
+    }
   }
 }
