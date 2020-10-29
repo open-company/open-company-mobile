@@ -3,15 +3,33 @@ import React from 'react';
 import { StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { handleWebMessage, usePushNotificationHandler, useDeepLinkHandler, useColorSchemeHandler } from './src/nativeWebBridge';
-import { default as getEnvVars } from './environment';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import Constants from 'expo-constants';
 
-console.log("DBG getEnvVars", getEnvVars());
+const getEnvVars = (manifest) => {
+  const extras = manifest.extra;
+  // What is __DEV__ ?
+  // This variable is set to true when react-native is running in Dev mode.
+  // __DEV__ is true when run locally, but false when published.
+  if (__DEV__) {
+    return extras.envs.dev;
+  }
 
-const { webViewUrl, whitelistedOrigins, sentryDSN, sentryEnvironment, debug } = getEnvVars();
+  switch(manifest.releaseChannel) {
+    case "staging":
+      return extras.envs.staging;
+    case "beta":
+      return extras.envs.beta;
+    case "prod":
+    default:
+      return extras.envs.prod;
+  }
+};
+
+const { webViewUrl, whitelistedOrigins, sentryEnvironment, debug } = getEnvVars(Constants.manifest);
 
 Sentry.init({
-  dsn: sentryDSN,
+  dsn: Constants.manifest.extra.sentryDSN,
   enableInExpoDevelopment: true,
   environment: sentryEnvironment,
   debug: debug, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production

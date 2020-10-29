@@ -77,7 +77,14 @@ Users with the app installed will autmoatically receive the update OTA.
 
 ### Native App Release
 
-Insert your Sentry auth token in app.json before releasing staging/production apps, it's needed to upload source maps.
+You need the following values in your env to build the app for staging or production:
+
+export GA_API_KEY="..."
+export OC_MOBILE_GH_AUTH_TOKEN="..."
+
+You can find GA_API_KEY (also known as Firebase apiKey from OC's GA account), and you can get a github auth token from github account settings, more info [here](https://docs.sentry.io/product/releases/#install-repo-integration)
+
+Also do not forget to increment the buildVersion value every time you create a new build for TestFlight or staging testing. And change the app version when you are ready to release.
 
 Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release through the respective app store channels for review.
 
