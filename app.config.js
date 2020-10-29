@@ -28,7 +28,7 @@ const whitelistedOrigins = [
 ];
 
 const localDevHost = process.env.LOCAL_DEV_HOST || "localhost";
-const localDevPost = process.env.LOCAL_DEV_PORT || "3559";
+const localDevPort = process.env.LOCAL_DEV_PORT || "3559";
 
 const devWhitelistedOrigins = [
     ...whitelistedOrigins,
@@ -107,7 +107,7 @@ export default {
         debug: true,
         sentryEnvironment: "local",
         // Change this to your local development tunnel
-        webViewUrl: `http://${localDevHost}:${localDevPost}/login/desktop`,
+        webViewUrl: `http://${localDevHost}:${localDevPort}/login/desktop`,
         whitelistedOrigins: devWhitelistedOrigins,
       },
       staging: {
