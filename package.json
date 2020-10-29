@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "expo": "^39.0.3",
+    "expo-firebase-analytics": "~2.5.0",
     "expo-linking": "^1.0.4",
     "expo-notifications": "~0.7.2",
     "react": "^16.14.0",

@@ -29,6 +29,14 @@
       "icon": "./assets/android-notification-icon.png"
     },
     "userInterfaceStyle": "automatic",
+    "web": {
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyA52EQsy6jcBJVBnuREeCHvUyp6NIKlHBM",
+          "measurementId": "1:577193868724:android:802be8d5557ad8ad1606e1"
+        }
+      }
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "io.carrot.mobile",
