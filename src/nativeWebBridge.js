@@ -121,7 +121,7 @@ export function useDeepLinkHandler(webViewRef, webViewUrl) {
 
 
 export function useColorSchemeHandler(webViewRef) {
-    const handleColorSchemeChange = useCallback(() => {
+    const handleColorSchemeChange = useCallback(({ colorScheme }) => {
         console.log(`Handling color scheme change`);
         // do something with color scheme
         const cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
