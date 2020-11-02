@@ -36,7 +36,7 @@ const devWhitelistedOrigins = [
 ];
 
 const version = "1.3.0";
-const buildVersion = 23;
+const buildVersion = 24;
 
 export default {
   name: "Carrot",
@@ -91,7 +91,7 @@ export default {
   ios: {
     supportsTablet: false,
     bundleIdentifier: "io.carrot.mobile",
-    buildNumber: buildVersion.toString(),
+    buildNumber: buildVersion.toString() + "prod",
     icon: "./assets/ios-icon.png"
   },
   android: {
