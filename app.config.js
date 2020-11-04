@@ -7,8 +7,6 @@
 * You can find GA_API_KEY (also known as Firebase apiKey from OC's GA account), and you can get a github auth token from your own account
 ***********************/
 
-import {default as Constants} from 'expo-constants';
-
 const whitelistedOrigins = [
     "https://carrot.io",
     "https://*.carrot.io",
@@ -98,7 +96,8 @@ export default {
     package: "io.carrot.mobile",
     versionCode: buildVersion,
     permissions: [],
-    icon: "./assets/android-icon.png"
+    icon: "./assets/android-icon.png",
+    useNextNotificationsApi: true
   },
   // All values in extra will be passed to your app.
   extra: {
