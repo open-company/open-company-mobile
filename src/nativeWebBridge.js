@@ -91,10 +91,12 @@ export function usePushNotificationHandler(webViewRef, webViewUrl) {
     });
 
     useEffect(() => {
-        const subscription = Notifications.addPushTokenListener(handleNotification);
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        const subscription = Notifications.addNotificationResponseReceivedListener(handleNotification);
+
         if (subscription)
-            return () => subscription.remove();
-    }, [handleNotification]);
+            return () => Notifications.removeNotificationSubscription(subscription);
+      }, [handleNotification]);
 }
 
 export function useDeepLinkHandler(webViewRef, webViewUrl) {
