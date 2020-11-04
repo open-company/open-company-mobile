@@ -13,3 +13,7 @@ web-report/
 open-company-mobile.iml
 open-company-mobile.ipr
 open-company-mobile.iws
+
+.vscode/
+.idea/
+.calva/
