@@ -34,7 +34,7 @@ const devWhitelistedOrigins = [
 ];
 
 const version = "1.3.0";
-const buildVersion = 24;
+const buildVersion = 25;
 
 export default {
   name: "Carrot",
