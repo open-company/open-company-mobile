@@ -89,7 +89,7 @@ export default {
   ios: {
     supportsTablet: false,
     bundleIdentifier: "io.carrot.mobile",
-    buildNumber: buildVersion.toString() + "prod",
+    buildNumber: buildVersion.toString(),
     icon: "./assets/ios-icon.png"
   },
   android: {
