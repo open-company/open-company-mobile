@@ -12,7 +12,7 @@
     "expo-constants": "~5.0.1",
     "expo-permissions": "^6.0.0",
     "react": "16.8.3",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.13.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-web": "^0.11.4",
     "react-native-webview": "^5.12.1",
