@@ -33,6 +33,8 @@ export const handleWebMessage = (webViewRef, event) => {
             break;
         case 'get-color-scheme':
             bridgeGetColorScheme(webViewRef);
+        case 'open-in-browser':
+          bridgeOpenInBrowser(webViewRef, data);
     }
 };
 
@@ -71,6 +73,11 @@ const bridgeGetColorScheme = async (webViewRef) => {
     const cmd = `oc.web.expo.on_color_scheme_change('${colorScheme}'); true;`;
     console.log(cmd);
     webViewRef.current.injectJavaScript(cmd);
+}
+
+const bridgeOpenInBrowser = async (webViewRef, url) => {
+  console.log(`bridgeOpenInBrowser called by web with url ${url}`);
+  Linking.openURL(url);
 }
 
 export function usePushNotificationHandler(webViewRef, webViewUrl) {
