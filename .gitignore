@@ -10,6 +10,9 @@ web-build/
 web-report/
 **/.DS_Store
 .idea/
+.lsp/
+.clj-kondo/
+.clojure-lsp/
 open-company-mobile.iml
 open-company-mobile.ipr
 open-company-mobile.iws
