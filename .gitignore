@@ -9,3 +9,13 @@ npm-debug.*
 web-build/
 web-report/
 **/.DS_Store
+
+.idea/
+.vscode/
+.lsp/
+.clojure-lsp/
+.clj-kondo/
+
+open-company-mobile.iml
+open-company-mobile.ipr
+open-company-mobile.iws
