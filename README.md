@@ -22,6 +22,37 @@ expo start
 This will start an Expo development tunnel, and open a build status page in your browser. Scan
 the QR code on that page with your mobile device to open the app within the Expo client.
 
+## Debug from device or simulator/emulator
+
+You can debug the expo webview with react-devtools. You need to install react-devtools as global package:
+
+```console
+npx install -g react-devtools
+```
+
+Install the [React DevTools extentions](https://docs.expo.io/workflow/debugging/#debugging-with-react-devtools) for Chrome if you haven't already (this is also).
+
+Then start the dev tools gui with:
+
+```console
+react-devtools
+```
+
+and then start this project, then open the app (if from simulator/emulator use the left side pane of the expo page that opens when you start this, if device open expo app etc).
+Once inside the app you need to shake it vertically to show the hidden Expo menu and then tap on Start remote debugging.
+
+Remember the shake gesture to disable it as it's pretty annoying having all these pages opening automatically when you don't need remote debug.
+
+Bring the [debuger ui page](http://localhost:19001/debugger-ui) in foreground and start debugging it.
+
+NB: on the client site there is a script injection that needs to be added before ReactDOM is required. The script is injected only if you have this environment variable set:
+
+```console
+export REACT_NATIVE_DEVTOOLS_URL="http://localhost:8097"
+```
+
+More info on debugging Expo applications can be found [here](https://docs.expo.io/workflow/debugging/#debugging-with-react-devtools)
+
 ## Deploying
 
 ### OTA Release (JS-only)
@@ -46,8 +77,16 @@ Users with the app installed will autmoatically receive the update OTA.
 
 ### Native App Release
 
-Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release
-through the respective app store channels for review.
+You need the following values in your env to build the app for staging or production:
+
+export GA_API_KEY="..."
+export OC_MOBILE_GH_AUTH_TOKEN="..."
+
+You can find GA_API_KEY (also known as Firebase apiKey from OC's GA account), and you can get a github auth token from github account settings, more info [here](https://docs.sentry.io/product/releases/#install-repo-integration)
+
+Also do not forget to increment the buildVersion value every time you create a new build for TestFlight or staging testing. And change the app version when you are ready to release.
+
+Changes to the native configuration (e.g. the icon, permissions, etc) will require an official release through the respective app store channels for review.
 
 ```
 # iOS
@@ -57,9 +96,7 @@ expo build:ios --release-channel staging
 expo build:android --release-channel staging
 ```
 
-These commands will run the build on the Expo build service. After a short while, a link will
-be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective
-test services (TestFlight / Android Internal Testing) as usual.
+These commands will run the build on the Expo build service. After a short while, a link will be provided with the resulting .ipa/.apk artifact. These can then be uploaded to their respective test services (TestFlight / Android Internal Testing) as usual.
 
 ### AppStore and Google play release
 

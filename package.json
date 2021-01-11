@@ -5,21 +5,27 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "clean": "watchman watch-del-all && react-native start --reset-cache",
+    "manual-clean": "rm -fdR .expo*/ node_modules/",
+    "postinstall": "jetify -r"
   },
   "dependencies": {
-    "expo": "^33.0.0",
-    "expo-constants": "~5.0.1",
-    "expo-permissions": "^6.0.0",
-    "react": "16.8.3",
-    "react-dom": "^16.8.6",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-    "react-native-web": "^0.11.4",
-    "react-native-webview": "^5.12.1",
+    "expo": "^39.0.3",
+    "expo-firebase-analytics": "~2.5.0",
+    "expo-linking": "^1.0.4",
+    "expo-notifications": "~0.7.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
+    "react-native-appearance": "~0.3.3",
+    "react-native-web": "^0.14.1",
+    "react-native-webview": "^10.7.0",
+    "sentry-expo": "^3.0.2",
     "url": "^0.11.0"
   },
+  "private": true,
   "devDependencies": {
-    "babel-preset-expo": "^5.1.1"
-  },
-  "private": true
+    "jetifier": "^1.6.6"
+  }
 }
