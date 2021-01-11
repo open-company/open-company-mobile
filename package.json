@@ -20,7 +20,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-appearance": "~0.3.3",
     "react-native-web": "^0.14.1",
-    "react-native-webview": "^10.7.0",
+    "react-native-webview": "^11.0.0",
     "sentry-expo": "^3.0.2",
     "url": "^0.11.0"
   },
